@@ -7,7 +7,9 @@ This project is for checking shift-register (74HC595).
 - modules: none
 
 ## Connection to XIAO nRF52840
-![schematic](img/xiao-nrf--shift-reg.png)
+
+## 74HC595 x2 (Daisy chained)
+![schematic-x2](img/xiao-nrf--shift-reg-x2.png)
 
 
 ## Local Build

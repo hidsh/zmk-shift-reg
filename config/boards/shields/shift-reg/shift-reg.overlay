@@ -1,11 +1,36 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 #include <physical_layouts.dtsi>
 
-// shift-register
 &xiao_serial { status = "disabled"; };
+
+// shift-register
+&pinctrl {
+    spi2_default: spi2_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK,  1, 13)>,   // SCLK (P1.13=XIAO:D8/SCK)
+                    <NRF_PSEL(SPIM_MOSI, 1, 15)>,   // SDIO (P1.15=XIAO:D10/MOSI)
+//                  <NRF_PSEL(SPIM_MISO, 1, 14)>;   // SDIO (P1.14=XIAO:D9/MISO by default)
+                    <NRF_PSEL(SPIM_MISO, 0, 31)>;   // SDIO (P0.31=Not Connection in xiao nRF)
+        };
+    };
+
+    spi2_sleep: spi2_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK,  1, 13)>,   // SCLK (P1.13=XIAO:D8/SCK)
+                    <NRF_PSEL(SPIM_MOSI, 1, 15)>,   // SDIO (P1.15=XIAO:D10/MOSI)
+//                  <NRF_PSEL(SPIM_MISO, 1, 14)>;   // SDIO (P1.14=XIAO:D9/MISO by default)
+                    <NRF_PSEL(SPIM_MISO, 0, 31)>;   // SDIO --> P0.31 (Not Connection at xiao nRF)
+            low-power-enable;
+        };
+    };
+};
+
+// note: xiao_spi is alias to spi2 at zmk/zephyr/boards/arm/seeeduino_xiao_ble/seeed_xiao_connector.dts:29
+
 &xiao_spi {
 	status = "okay";
-	cs-gpios = <&xiao_d 7 GPIO_ACTIVE_LOW>;
+ // cs-gpios = <&xiao_d 7 GPIO_ACTIVE_LOW>;
+	cs-gpios = <&xiao_d 9 GPIO_ACTIVE_LOW>;
 	shifter: 595@0 {
 		compatible = "zmk,gpio-595";
 		status = "okay";
@@ -27,7 +52,7 @@
 		display-name = "Default Layout";
 		kscan = <&kscan0>;
 		transform = <&default_transform>;
-		
+
 		keys
         //                          w   h   x   y  rot rx ry
             = <&key_physical_attrs 100 100   0   0  0   0  0>
@@ -54,14 +79,14 @@ RC(1,0) RC(1,1) RC(1,2) RC(1,3)
 	kscan0: kscan_0 {
 		compatible = "zmk,kscan-gpio-matrix";
 		diode-direction = "col2row";
-		
+
 		col-gpios
-            = <&shifter 1 GPIO_ACTIVE_HIGH>         // 1st 595 #1 pin
-            , <&shifter 2 GPIO_ACTIVE_HIGH>         // 1st 595 #2 pin
-            , <&shifter (8+1) GPIO_ACTIVE_HIGH>     // 2nd 595 #1 pin -> 8+1=9
-            , <&shifter (8+2) GPIO_ACTIVE_HIGH>     // 2nd 595 #2 pin -> 8+2=10
+            = <&shifter 1 GPIO_ACTIVE_HIGH>         // col0: 1st 595 #1(QB) -> 1
+            , <&shifter 2 GPIO_ACTIVE_HIGH>         // col1: 1st 595 #2(QC) -> 2
+            , <&shifter (8+1) GPIO_ACTIVE_HIGH>     // col2: 2nd 595 #1(QB) -> 8+1=9
+            , <&shifter (8+2) GPIO_ACTIVE_HIGH>     // col3: 2nd 595 #2(QC) -> 8+2=10
 			;
-		
+
 		row-gpios
 			= <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
 			, <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>

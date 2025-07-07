@@ -7,9 +7,6 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 
-#define NAV_L 1
-#define NUM_L 2
-
 / {
     keymap {
         compatible = "zmk,keymap";

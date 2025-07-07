@@ -7,11 +7,18 @@
 # Usage:
 #   1. cd PATH/TO/zmk/app
 #   2. make 
+#
+#   or output build log to a file as below:
+#
+#      make -f shift-reg.mk 2>&1 | tee new.log
 
 SHIELD = shift-reg
 BOARD = seeeduino_xiao_ble
 DRV_NAME = XIAO
 KBD_PID = 615e					# product id
+
+# for serial debugging, or commentout if you don't need it
+USB_LOGGING = --snippet zmk-usb-logging 
 
 # abs path to this makefile
 mkpath = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
@@ -36,6 +43,7 @@ flash: build info
 build: info
 	west build  --pristine \
 	            --board ${BOARD} \
+	            ${USB_LOGGING} \
 	            --  -DSHIELD=${SHIELD} \
 	                -DZMK_CONFIG='${mkpath}/config'
 	@echo -n ':: '

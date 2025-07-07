@@ -5,7 +5,7 @@
 
 // shift-register
 &pinctrl {
-    spi2_default: spi2_default {
+    spi0_default: spi0_default {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK,  0, 5)>,    // XIAO #6(P0.05=D5/SCL)   --> 595 #11(SRCLK)
                     <NRF_PSEL(SPIM_MOSI, 0, 4)>,    // XIAO #5(P0.04=D4/SDA)   --> 595 #14(SER)
@@ -14,7 +14,7 @@
         };
     };
 
-    spi2_sleep: spi2_sleep {
+    spi0_sleep: spi0_sleep {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK,  0, 5)>,    // XIAO #6(P0.05=D5/SCL)   --> 595 #11(SRCLK)
                     <NRF_PSEL(SPIM_MOSI, 0, 4)>,    // XIAO #5(P0.04=D4/SDA)   --> 595 #14(SER)
@@ -27,8 +27,12 @@
 
 // note: xiao_spi is alias to spi2 at zmk/zephyr/boards/arm/seeeduino_xiao_ble/seeed_xiao_connector.dts:29
 
-&xiao_spi {
+&spi0 {
+    compatible = "nordic,nrf-spim";
 	status = "okay";
+    pinctrl-0 = <&spi0_default>;
+    pinctrl-1 = <&spi0_sleep>;
+    pinctrl-names = "default", "sleep";
  // cs-gpios = <&xiao_d 7 GPIO_ACTIVE_LOW>;         // XIAO #8(P1.12=D7/RX)    --> 595 #12(RCLK) as /CS
 	cs-gpios = <&xiao_d 6 GPIO_ACTIVE_LOW>;         // XIAO #7(P1.11=D6/TX)    --> 595 #12(RCLK) as /CS
 	shifter: 595@0 {

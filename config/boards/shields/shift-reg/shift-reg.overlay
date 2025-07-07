@@ -10,7 +10,7 @@
             psels = <NRF_PSEL(SPIM_SCK,  0, 5)>,    // XIAO #6(P0.05=D5/SCL)   --> 595 #11(SRCLK)
                     <NRF_PSEL(SPIM_MOSI, 0, 4)>,    // XIAO #5(P0.04=D4/SDA)   --> 595 #14(SER)
 //                  <NRF_PSEL(SPIM_MISO, 1, 14)>;   // XIAO #10(P1.14=D9/MISO by default) --> N.C.
-                    <NRF_PSEL(SPIM_MISO, 0, 4)>;    // XIAO N.C.(P0.31)                   --> N.C.
+                    <NRF_PSEL(SPIM_MISO, 0, 4)>;    // XIAO #5(P0.04=D4/SDA)   --> 595 #14(SER)
         };
     };
 
@@ -19,7 +19,7 @@
             psels = <NRF_PSEL(SPIM_SCK,  0, 5)>,    // XIAO #6(P0.05=D5/SCL)   --> 595 #11(SRCLK)
                     <NRF_PSEL(SPIM_MOSI, 0, 4)>,    // XIAO #5(P0.04=D4/SDA)   --> 595 #14(SER)
 //                  <NRF_PSEL(SPIM_MISO, 1, 14)>;   // XIAO #10(P1.14=D9/MISO by default) --> N.C.
-                    <NRF_PSEL(SPIM_MISO, 0, 4)>;    // XIAO N.C.(P0.31)                   --> N.C.
+                    <NRF_PSEL(SPIM_MISO, 0, 4)>;    // XIAO #5(P0.04=D4/SDA)   --> 595 #14(SER)
             low-power-enable;
         };
     };
